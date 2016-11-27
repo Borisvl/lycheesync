@@ -440,7 +440,7 @@ class LycheeSyncer:
                             photo = LycheePhoto(pid, self.conf, f, album)
                             if not(self.dao.photoExists(photo)):
                                 res = self.copyFileToLychee(photo)
-                                self.adjustRotation(photo)
+                                #self.adjustRotation(photo)
                                 self.makeThumbnail(photo)
                                 res = self.dao.addFileToAlbum(photo)
                                 # increment counter
