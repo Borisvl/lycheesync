@@ -300,7 +300,7 @@ class LycheeDAO:
                  photo.checksum))
             row = cur.fetchall()
             if len(row) != 0:
-                res = True
+                return True
 
             # Add Warning if photo exists in another album
 
