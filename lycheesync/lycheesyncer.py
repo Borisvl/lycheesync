@@ -94,15 +94,18 @@ class LycheeSyncer:
 
     def thumbIt(self, res, photo, destinationpath, destfile):
         """
-        Create the thumbnail of a given photo
+        Creates the thumbnails of a given photo
         Parameters:
-        - res: should be a set of h and v res (640, 480)
+        - res: should be a list of h and v tuples (640, 480)
         - photo: a valid LycheePhoto object
-        - destinationpath: a string the destination full path of the thumbnail (without filename)
-        - destfile: the thumbnail filename
-        Returns the fullpath of the thuumbnail
+        - destinationpaths: a list of the destination full paths of the thumbnails (without filename)
+        - destfiles: the thumbnail filenames
+        Returns a list with the fullpaths of the thumbnails
         """
 
+        quality = 85
+        if self.conf["thumbQuality"]:
+            quality = self.conf["thumbQuality"]
         if photo.width > photo.height:
             delta = photo.width - photo.height
             left = int(delta / 2)
@@ -116,7 +119,6 @@ class LycheeSyncer:
             right = int(photo.width)
             lower = int(photo.width + upper)
 
-        destimage = os.path.join(destinationpath, destfile)
         try:
             img = Image.open(photo.destfullpath)
         except Exception as e:
@@ -125,9 +127,14 @@ class LycheeSyncer:
             raise
 
         img = img.crop((left, upper, right, lower))
-        img.thumbnail(res, Image.ANTIALIAS)
-        img.save(destimage, quality=99)
-        return destimage
+        destimages = []
+        for i in range(0,len(res)):
+            destimage = os.path.join(destinationpath, destfile[i])
+            nimg = img.copy()
+            nimg.thumbnail(res[i], Image.ANTIALIAS)
+            nimg.save(destimage, quality=quality)
+            destimages.append(destimage)
+        return destimages
 
     def makeThumbnail(self, photo):
         """
@@ -145,8 +152,7 @@ class LycheeSyncer:
         # compute destination path
         destpath = os.path.join(self.conf["lycheepath"], "uploads", "thumb")
         # make thumbnails
-        photo.thumbnailfullpath = self.thumbIt(sizes[0], photo, destpath, destfiles[0])
-        photo.thumbnailx2fullpath = self.thumbIt(sizes[1], photo, destpath, destfiles[1])
+        photo.thumbnailfullpath, photo.thumbnailx2fullpath = self.thumbIt(sizes, photo, destpath, destfiles)
 
     def copyFileToLychee(self, photo):
         """
