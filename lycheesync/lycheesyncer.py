@@ -222,7 +222,7 @@ class LycheeSyncer:
 
         if photo.exif.orientation != 1:
             img = JPEGImage(photo.destfullpath)
-            corrected = photo.exif_autotransform()
+            corrected = img.exif_autotransform()
             corrected.save(photo.destfullpath)
             photo.height = corrected.height
             photo.width = corrected.width
