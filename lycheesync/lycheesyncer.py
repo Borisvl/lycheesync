@@ -254,7 +254,7 @@ class LycheeSyncer:
                         photo.width = h
                     exif_dict["0th"][piexif.ImageIFD.Orientation] = 1
                     exif_bytes = piexif.dump(exif_dict)
-                    img.save(photo.destfullpath, exif=exif_bytes, quality=99)
+                    img.save(photo.destfullpath, exif=exif_bytes, quality="keep")
             img.close()
 
     def reorderalbumids(self, albums):
