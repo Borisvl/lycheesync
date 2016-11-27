@@ -222,12 +222,12 @@ class LycheeSyncer:
 
         if photo.exif.orientation != 1:
             img = JPEGImage(photo.destfullpath)
-            corrected = photo.exif_autotransform()
+            corrected = img.exif_autotransform()
             corrected.save(photo.destfullpath)
             photo.height = corrected.height
             photo.width = corrected.width
             photo.exif.orientation = corrected.exif_orientation
-            photo.__generateHash()
+            photo.generateHash()
 #             img = Image.open(photo.destfullpath)
 #             if "exif" in img.info:
 #                 exif_dict = piexif.load(img.info["exif"])

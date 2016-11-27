@@ -126,7 +126,7 @@ class LycheePhoto:
         return self.convert_strdate_to_timestamp(self._str_datetime)
 
     # Compute checksum
-    def __generateHash(self):
+    def generateHash(self):
         sha1 = hashlib.sha1()
         with open(self.srcfullpath, 'rb') as f:
             sha1.update(f.read())
@@ -161,7 +161,7 @@ class LycheePhoto:
         self.destfullpath = os.path.join(self.conf["lycheepath"], "uploads", "big", self.url)
 
         # Generate file checksum
-        self.__generateHash()
+        self.generateHash()
 
         # thumbnails already in place (see makeThumbnail)
 
