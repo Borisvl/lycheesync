@@ -227,7 +227,7 @@ class LycheeSyncer:
             photo.height = corrected.height
             photo.width = corrected.width
             photo.exif.orientation = corrected.exif_orientation
-            photo.generateHash()
+            #photo.generateHash()
 #             img = Image.open(photo.destfullpath)
 #             if "exif" in img.info:
 #                 exif_dict = piexif.load(img.info["exif"])
@@ -440,7 +440,7 @@ class LycheeSyncer:
                             photo = LycheePhoto(pid, self.conf, f, album)
                             if not(self.dao.photoExists(photo)):
                                 res = self.copyFileToLychee(photo)
-                                #self.adjustRotation(photo)
+                                self.adjustRotation(photo)
                                 self.makeThumbnail(photo)
                                 res = self.dao.addFileToAlbum(photo)
                                 # increment counter
